@@ -1,4 +1,4 @@
-package www.jsu.stu;
+package com.edu.jsu.pry.account;
 
 public class User {
     private String id;

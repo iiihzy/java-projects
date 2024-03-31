@@ -1,4 +1,4 @@
-package www.jsu.stu;
+package com.edu.jsu.pry.account;
 
 import java.util.ArrayList;
 import java.util.Scanner;
