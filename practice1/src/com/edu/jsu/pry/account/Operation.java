@@ -1,29 +1,28 @@
 package com.edu.jsu.pry.account;
 
+import com.edu.jsu.pry.inter.*;
+
 import java.util.ArrayList;
 
-public abstract class Operation {
-    public void addAccount(ArrayList<User> list) {
+public abstract class Operation implements AddAccount, QueryAccount, DataAccount, Deposit, WithDrawal, Transfer {
+    private void addAccount(ArrayList<User> list) {
     }
 
-    public void queryAccount(ArrayList<User> list) {
+    private void queryAccount(ArrayList<User> list) {
     }
 
-    public void dataAccount(ArrayList<User> list) {
+    private void dataAccount(ArrayList<User> list) {
     }
 
-    public void deposit(ArrayList<User> list) {
-
-    }
-    public static void withdrawal(ArrayList<User> list) {
+    private void deposit(ArrayList<User> list) {
     }
 
-    public static void transfer(ArrayList<User> list){
+    private static void withdrawal(ArrayList<User> list) {
+    }
 
+    private static void transfer(ArrayList<User> list) {
     }
 
 
-
-
-    }
+}
 
