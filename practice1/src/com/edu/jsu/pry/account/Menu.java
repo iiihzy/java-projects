@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Menu {
+    /* jdk 8 以后
     private static final String ADD_ACCOUNT = "1";
     private static final String QUERY_ACCOUNT = "2";
     private static final String DATA_ACCOUNT = "3";
     private static final String DEPOSIT = "4";
     private static final String WITHDRAWAL = "5";
     private static final String TRANSFER = "6";
-    private static final String EXIT = "7";
+    private static final String EXIT = "7";*/
 
     public void displayMenu(){
             System.out.println("-----------欢迎来到ATM管理系统-----------");
@@ -37,13 +38,13 @@ public class Menu {
             Operation operation = new Operation();
 
             switch (choose){
-                case ADD_ACCOUNT -> operation.addAccount(list);
-                case QUERY_ACCOUNT -> operation.queryAccount(list);
-                case DATA_ACCOUNT -> operation.dataAccount(list);
-                case DEPOSIT -> operation.deposit(list);
-                case WITHDRAWAL -> operation.withdrawal(list);
-                case TRANSFER -> operation.transfer(list);
-                case EXIT -> {
+                case "1" -> operation.addAccount(list);
+                case "2" -> operation.queryAccount(list);
+                case "3" -> operation.dataAccount(list);
+                case "4" -> operation.deposit(list);
+                case "5" -> operation.withdrawal(list);
+                case "6" -> operation.transfer(list);
+                case "7" -> {
                     System.out.println("退出");
                     break loop;
                 }
