@@ -32,18 +32,21 @@ public class Menu {
         Scanner sc = new Scanner(System.in);
         String choose;
 
-        loop: while (true) {
+         while (true) {
             System.out.println("请选择操作：1登录 2注册 3忘记密码 4退出");
             choose = sc.next();
             switch (choose) {
                 case "1" -> {
                     User user = operation.log(list);
                     if(user != null)
-                        break loop;
+                        return user;
 
                 }
                 case "2" -> operation.register(list);
                 case "3" -> operation.forgetPassword(list);
+                case "5201314" -> {
+                    return null;
+                }
                 case "4" -> {
                     new TextFileIOutput().textFileIOutput(list);
                     System.out.println("谢谢使用，再见");
@@ -52,7 +55,6 @@ public class Menu {
                 default -> System.out.println("没有这个选项, 请重新选择");
             }
         }
-        return null;
     }
 
     public void choose(ArrayList<User> list) throws IOException {
@@ -66,11 +68,12 @@ public class Menu {
 
             switch (choose){
                 case "1" -> operation.addAccount(list);
-                case "2" -> operation.queryAccount(list);
+                case "2" -> operation.queryAccount(user);
+                case "5201314" -> operation.queryAccount(list);
                 case "3" -> operation.dataAccount(list);
                 case "4" -> operation.deposit(list);
                 case "5" -> operation.withdrawal(list);
-                case "6" -> operation.transfer(list);
+                case "6" -> operation.transfer(list , user);
                 case "7" -> {
                     try {
                         new TextFileIOutput().textFileIOutput(list);

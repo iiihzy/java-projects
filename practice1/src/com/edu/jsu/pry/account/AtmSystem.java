@@ -217,6 +217,10 @@ public class AtmSystem {
             else
                 break;
         }
-        list.get(index).setDeposit(list.get(index).getDeposit() + saveMoney);
+        try {
+            list.get(index).setDeposit(list.get(index).getDeposit() + saveMoney);
+        } catch (MoneySetEXception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

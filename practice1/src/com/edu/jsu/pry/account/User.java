@@ -89,11 +89,14 @@ public class User implements Serializable {
         this.name = name;
     }
 
+
     public int getDeposit() {
         return deposit;
     }
 
-    public void setDeposit(int deposit) {
+    public void setDeposit(int deposit) throws MoneySetEXception {
+        if(deposit < 0)
+            throw new MoneySetEXception();
         this.deposit = deposit;
     }
 

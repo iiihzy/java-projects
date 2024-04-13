@@ -75,12 +75,21 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         }
 
         System.out.println("请输入用户想要存入的数额");
-        user.setDeposit(sc.nextInt());
+        try {
+            user.setDeposit(sc.nextInt());
+        } catch (MoneySetEXception e) {
+
+        }
 
         list.add(user);
         System.out.println("注册成功");
     }
 
+    public void queryAccount(User user){
+        System.out.println("id\t\t\t姓名\t余额");
+        System.out.println(user.getId() + "\t" + user.getName() + "\t" + user.getDeposit());
+        return;
+    }
     public void queryAccount(ArrayList<User> list) {
         System.out.println("查询账户");
         if (list.isEmpty()) {
@@ -90,6 +99,7 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
 
         System.out.println("id\t\t\t姓名\t余额");
         for (User account : list) {
+            System.out.println(list.size());
             System.out.println(account.getId() + "\t" + account.getName() + "\t" + account.getDeposit());
         }
 
@@ -168,25 +178,14 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         save(list, index, -draw);
     }
 
-    public void transfer(ArrayList<User> list) {
+    public void transfer(ArrayList<User> list , User user) {
         System.out.println("转账");
 
         Scanner sc = new Scanner(System.in);
-        String id, objectId;
-        int index, objectindex;
+        String objectId;
+        int objectindex;
 
-        while (true) {
-            System.out.println("请输入你的账户id");
-            id = sc.next();
-            index = getIdIndex(list, id);
-
-            if (index < 0) {
-                System.out.println("该账户不存在, 请重新输入");
-            } else
-                break;
-        }
-        System.out.println("请输入你转账对象的账户id");
-
+        System.out.println("请输入转账对象的账户id");
         while (true) {
             objectId = sc.next();
             objectindex = getIdIndex(list, objectId);
@@ -197,8 +196,16 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         }
         System.out.println("请输入你要转账的数额");
 
-        int money = sc.nextInt();
-        save(list, index, -money);
+        int money = 0;
+        while (true) {
+            money = sc.nextInt();
+            try {
+                user.setDeposit(user.getDeposit() - money);
+                break;
+            } catch (MoneySetEXception e) {
+                System.out.println("余额不足,请重新输入");
+            }
+        }
         save(list, objectindex, money);
 
     }
@@ -228,7 +235,11 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
             } else
                 break;
         }
-        list.get(index).setDeposit(list.get(index).getDeposit() + saveMoney);
+        try {
+            list.get(index).setDeposit(list.get(index).getDeposit() + saveMoney);
+        } catch (MoneySetEXception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static String getCode() {
