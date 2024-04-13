@@ -111,7 +111,7 @@ public class AtmSystem {
                 break;
         }
 
-        list.get(index).setId(newId);
+
     }
     // 存款
     public static void deposit(ArrayList<User> list){

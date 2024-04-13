@@ -1,12 +1,18 @@
 package com.edu.jsu.pry.account;
 
+import com.edu.jsu.pry.myexception.IdFormatException;
+import com.edu.jsu.pry.myexception.NameFormatException;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class User {
-    private String username;
+public class User implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 9191003616561417527L;
     private String password;
-    private String personID;
     private String phoneNumber;
     private String id;
     private String name;
@@ -17,35 +23,21 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String personID, String phoneNumber) {
-        this.username = username;
+    public User(String name, String password, String id, String phoneNumber) {
+        this.name = name;
         this.password = password;
-        this.personID = personID;
+        this.id = id;
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) throws NameFormatException {
+        if(password.length() != 6 || !password.matches("\\d+"))
+            throw new NameFormatException();
         this.password = password;
-    }
-
-    public String getPersonID() {
-        return personID;
-    }
-
-    public void setPersonID(String personID) {
-        this.personID = personID;
     }
 
     public String getPhoneNumber() {
@@ -56,6 +48,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+
+    public User(String id, String password) {
+        this.password = password;
+        this.id = id;
+    }
 
     public User(String id, String name, int deposit) {
         this.id = id;
@@ -76,7 +73,9 @@ public class User {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(String id) throws IdFormatException {
+        if(id.length() != 10)
+            throw new IdFormatException();
         this.id = id;
     }
 
@@ -84,7 +83,9 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws NameFormatException {
+        if(name.length() < 2 || name.length() > 10)
+            throw new NameFormatException();
         this.name = name;
     }
 
