@@ -11,7 +11,28 @@ import java.util.Scanner;
 public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit, WithDrawal, Transfer, Log, Register, ForgetPassword {
 
     public void addAccount(ArrayList<User> list) {
+        System.out.println("添加账户");
+        Scanner sc = new Scanner(System.in);
+        String id;
+        while (true) {
+            System.out.println("请输入用户的id");
+            id = sc.next();
+            if(contains(list, id))
+                System.out.println("id已存在, 请重新输入");
+            else
+                break;
+        }
 
+
+        System.out.println("请输入用户的姓名");
+        String name = sc.next();
+
+        System.out.println("请输入用户想要存入的数额");
+        int deposit = sc.nextInt();
+
+        User user = new User(id, name, deposit);
+        list.add(user);
+        System.out.println("账户添加成功");
     }
 
     public void addAccount(ArrayList<User> list, User user) {
@@ -99,7 +120,6 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
 
         System.out.println("id\t\t\t姓名\t余额");
         for (User account : list) {
-            System.out.println(list.size());
             System.out.println(account.getId() + "\t" + account.getName() + "\t" + account.getDeposit());
         }
 
@@ -137,12 +157,33 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
 
     }
 
+    public void deposit(User user) {
+        System.out.println("存款");
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("请输入你要存储的数额");
+        int moeny = 0;
+        while (true) {
+            moeny = sc.nextInt();
+            if(moeny < 0) {
+                System.out.println("存储数额不能为负, 请重新输入");
+                continue;
+            }
+            break;
+        }
+        try {
+            user.setDeposit(moeny + user.getDeposit());
+            System.out.println("存储成功!");
+        } catch (MoneySetEXception e) {
+
+        }
+    }
     public void deposit(ArrayList<User> list) {
         System.out.println("存款");
         Scanner sc = new Scanner(System.in);
         int index;
         while (true) {
-            System.out.println("请输入你的账户id");
+            System.out.println("请输入你需要存款的账户id");
             String id = sc.next();
             index = getIdIndex(list, id);
             if (index < 0)
@@ -152,15 +193,46 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         }
 
         System.out.println("请输入你要存入的数额");
-        int money = sc.nextInt();
-
+        int money = 0;
+        while (true) {
+            money = sc.nextInt();
+            if(money < 0) {
+                System.out.println("存储数额不能为负, 请重新输入");
+                continue;
+            }
+            break;
+        }
         save(list, index, money);
+    }
+    public void withdrawal(User user) {
+        System.out.println("取款");
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("请输入你想要取走的数额");
+        int draw = 0;
+        while (true) {
+            draw = sc.nextInt();
+            if(draw < 0) {
+                System.out.println("取款数额不能为负, 请重新输入");
+                continue;
+            }
+            break;
+        }
+
+        while (true) {
+            try {
+                user.setDeposit(user.getDeposit() - draw);
+                break;
+            } catch (MoneySetEXception e) {
+                System.out.println("余额不足, 请重新输入!");
+            }
+        }
     }
 
     public void withdrawal(ArrayList<User> list) {
         System.out.println("取款");
         Scanner sc = new Scanner(System.in);
-        System.out.println("请输入你的账户id");
+        System.out.println("请输入需要取款账户id");
         int index;
         String id;
         while (true) {
@@ -173,11 +245,53 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         }
 
         System.out.println("请输入你想要取走的数额");
-        int draw = sc.nextInt();
+        int draw = 0;
+        while (true) {
+            draw = sc.nextInt();
+            if(draw < 0) {
+                System.out.println("取款数额不能为负, 请重新输入");
+                continue;
+            }
+            break;
+        }
 
         save(list, index, -draw);
     }
 
+    public void transfer(ArrayList<User> list) {
+        System.out.println("转账");
+
+        Scanner sc = new Scanner(System.in);
+        String id, objectId;
+        int index, objectindex;
+
+        while (true) {
+            System.out.println("请输入你的账户id");
+            id = sc.next();
+            index = getIdIndex(list, id);
+
+            if (index < 0) {
+                System.out.println("该账户不存在, 请重新输入");
+            } else
+                break;
+        }
+        System.out.println("请输入你转账对象的账户id");
+
+        while (true) {
+            objectId = sc.next();
+            objectindex = getIdIndex(list, objectId);
+            if (objectindex < 0)
+                System.out.println("该账户不存在, 请重新输入");
+            else
+                break;
+        }
+        System.out.println("请输入你要转账的数额");
+
+        int money = sc.nextInt();
+        save(list, index, -money);
+        save(list, objectindex, money);
+
+    }
     public void transfer(ArrayList<User> list , User user) {
         System.out.println("转账");
 
@@ -228,13 +342,6 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
 
     public void save(ArrayList<User> list, int index, int saveMoney) {
         Scanner sc = new Scanner(System.in);
-        while (true) {
-            if (saveMoney > list.get(index).getDeposit()) {
-                System.out.println("余额不足, 请重新输入");
-                saveMoney = sc.nextInt();
-            } else
-                break;
-        }
         try {
             list.get(index).setDeposit(list.get(index).getDeposit() + saveMoney);
         } catch (MoneySetEXception e) {
@@ -338,7 +445,6 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
     public void register(ArrayList<User> list) {
         User user = new User();
         addAccount(list, user);
-        list.add(user);
     }
 
     @Override

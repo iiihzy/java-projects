@@ -15,22 +15,27 @@ public class TextFileInput {
             ois = new ObjectInputStream(new FileInputStream("b.txt"));
 
             while (true) {
-                try {
-                    User user = (User) ois.readObject();
+                // 尝试读取对象
+                User user = (User) ois.readObject();
+                // 如果成功读取到对象，则添加到列表中并打印列表大小
+                if (user != null) {
                     list.add(user);
-                } catch (EOFException e) {
+                    System.out.println(list.size());
+                } else {
                     break; // 到达文件末尾，退出循环
                 }
             }
+        } catch (EOFException e) {
+            // 到达文件末尾，不需要处理异常
         } catch (IOException | ClassNotFoundException e) {
-
+            e.printStackTrace(); // 打印异常堆栈信息
         } finally {
             try {
                 if (ois != null) {
                     ois.close();
                 }
             } catch (IOException e) {
-                // 异常处理
+                e.printStackTrace(); // 打印异常堆栈信息
             }
         }
     }
