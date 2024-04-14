@@ -11,29 +11,52 @@ import java.util.Scanner;
 public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit, WithDrawal, Transfer, Log, Register, ForgetPassword {
 
     public void addAccount(ArrayList<User> list) {
+        User user = new User();
         System.out.println("添加账户");
         Scanner sc = new Scanner(System.in);
         String id;
         while (true) {
             System.out.println("请输入用户的id");
-            id = sc.next();
-            if(contains(list, id))
-                System.out.println("id已存在, 请重新输入");
-            else
+
+            try {
+                id = sc.next();
+                user.setId(id);
                 break;
+            } catch (IdFormatException e) {
+                System.out.println("id格式错误, 请重新输入");
+            }
         }
 
 
         System.out.println("请输入用户的姓名");
-        String name = sc.next();
+        String name;
+        while (true) {
+            try {
+                name = sc.next();
+                user.setName(name);
+                break;
+            } catch (NameFormatException e) {
+                System.out.println("姓名格式错误, 请重新输入!");
+            }
+
+    }
 
         System.out.println("请输入用户想要存入的数额");
-        int deposit = sc.nextInt();
+        int deposit;
+        while (true) {
+            try {
+                deposit = sc.nextInt();
+                user.setDeposit(deposit);
+                break;
+            } catch (MoneySetEXception e) {
+                System.out.println("存款数额不能为负, 请重新操作!");
+            }
+        }
 
-        User user = new User(id, name, deposit);
+
         list.add(user);
         System.out.println("账户添加成功");
-    }
+}
 
     public void addAccount(ArrayList<User> list, User user) {
         Scanner sc = new Scanner(System.in);
@@ -106,11 +129,12 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         System.out.println("注册成功");
     }
 
-    public void queryAccount(User user){
+    public void queryAccount(User user) {
         System.out.println("id\t\t\t姓名\t余额");
         System.out.println(user.getId() + "\t" + user.getName() + "\t" + user.getDeposit());
         return;
     }
+
     public void queryAccount(ArrayList<User> list) {
         System.out.println("查询账户");
         if (list.isEmpty()) {
@@ -165,7 +189,7 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         int moeny = 0;
         while (true) {
             moeny = sc.nextInt();
-            if(moeny < 0) {
+            if (moeny < 0) {
                 System.out.println("存储数额不能为负, 请重新输入");
                 continue;
             }
@@ -178,6 +202,7 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
 
         }
     }
+
     public void deposit(ArrayList<User> list) {
         System.out.println("存款");
         Scanner sc = new Scanner(System.in);
@@ -196,7 +221,7 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         int money = 0;
         while (true) {
             money = sc.nextInt();
-            if(money < 0) {
+            if (money < 0) {
                 System.out.println("存储数额不能为负, 请重新输入");
                 continue;
             }
@@ -204,6 +229,7 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         }
         save(list, index, money);
     }
+
     public void withdrawal(User user) {
         System.out.println("取款");
         Scanner sc = new Scanner(System.in);
@@ -212,7 +238,7 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         int draw = 0;
         while (true) {
             draw = sc.nextInt();
-            if(draw < 0) {
+            if (draw < 0) {
                 System.out.println("取款数额不能为负, 请重新输入");
                 continue;
             }
@@ -248,7 +274,7 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         int draw = 0;
         while (true) {
             draw = sc.nextInt();
-            if(draw < 0) {
+            if (draw < 0) {
                 System.out.println("取款数额不能为负, 请重新输入");
                 continue;
             }
@@ -292,7 +318,8 @@ public class Operation implements AddAccount, QueryAccount, DataAccount, Deposit
         save(list, objectindex, money);
 
     }
-    public void transfer(ArrayList<User> list , User user) {
+
+    public void transfer(ArrayList<User> list, User user) {
         System.out.println("转账");
 
         Scanner sc = new Scanner(System.in);
